@@ -14,11 +14,14 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 #
+actions :add, :remove
 
-# Install the repository, if required
-if node[:logster][:install_repository]
-  include_recipe "logster::repository"
+def initialize(*args)
+    super
+    @action = :add
 end
 
-# Install the logster package
-package "logster"
+attribute :log_file, :kind_of => String, :name_attribute => true
+attribute :prefix, :kind_of => String
+attribute :graphite_host, :kind_of => String
+attribute :parser, :kind_of => String

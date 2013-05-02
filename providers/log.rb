@@ -14,11 +14,25 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 #
-
-# Install the repository, if required
-if node[:logster][:install_repository]
-  include_recipe "logster::repository"
+def whyrun_supported?
+  false
 end
 
-# Install the logster package
-package "logster"
+action :add do
+  new_resource.updated_by_last_action(false)
+
+  clean_name = new_resource.log_file.gsub(/\//, '_')
+
+  cron "logster-#{clean_name}" do
+    command "/usr/bin/logster --output graphite --graphite-host #{new_resource.graphite_host} #{new_resource.parser} #{new_resource.log_file}"
+    action :create
+  end
+end
+
+action :remove do
+  clean_name = new_resource.log_file.gsub(/\//, '_')
+
+  cron "logster-#{clean_name}" do
+    action :delete
+  end
+end
