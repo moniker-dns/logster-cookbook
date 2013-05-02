@@ -24,7 +24,7 @@ action :add do
   clean_name = new_resource.log_file.gsub(/\//, '_')
 
   cron "logster-#{clean_name}" do
-    command "/usr/bin/logster --output graphite --graphite-host #{new_resource.graphite_host} #{new_resource.parser} #{new_resource.log_file}"
+    command "/usr/bin/logster --output graphite --graphite-host #{new_resource.graphite_host} --metric-prefix #{new_resource.metric_prefix} #{new_resource.parser} #{new_resource.log_file}"
     action :create
   end
 end
