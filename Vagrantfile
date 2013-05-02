@@ -39,6 +39,7 @@ Vagrant.configure("2") do |config|
 
     # Set the chef run-list
     chef.add_recipe("logster")
+    chef.add_recipe("logster::test")
     chef.add_recipe("minitest-handler")
 
     # Provide some chef attributes
