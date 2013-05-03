@@ -15,12 +15,18 @@
 # under the License.
 #
 
-# Install the logster PPA
-apt_repository "logster" do
-  uri           "http://ppa.launchpad.net/kiall/logster/ubuntu"
-  distribution  node['lsb']['codename']
-  components    ["main"]
-  key           "DFA62498"
-  keyserver     "keyserver.ubuntu.com"
-  action        :add
+# Install the logster PPA, if required
+if node[:logster][:install_repository]
+  apt_repository "logster" do
+    uri           "http://ppa.launchpad.net/kiall/logster/ubuntu"
+    distribution  node['lsb']['codename']
+    components    ["main"]
+    key           "DFA62498"
+    keyserver     "keyserver.ubuntu.com"
+    action        :add
+  end
+else
+  apt_repository "logster" do
+    action  :remove
+  end
 end

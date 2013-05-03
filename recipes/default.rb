@@ -14,11 +14,7 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 #
-
-# Install the repository, if required
-if node[:logster][:install_repository]
-  include_recipe "logster::repository"
-end
+include_recipe "logster::repository"
 
 # Install the logster package
 package "logster"
