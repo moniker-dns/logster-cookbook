@@ -22,9 +22,9 @@ action :add do
   new_resource.updated_by_last_action(false)
 
   clean_name = new_resource.log_file.gsub(/\//, '_')
-  graphite_host = new_resource.graphite_host
+  clean_graphite_host = new_resource.graphite_host.gsub(/:/, '_')
 
-  cron "logster-#{graphite_host}-#{clean_name}" do
+  cron "logster-#{clean_graphite_host}-#{clean_name}" do
     command "/usr/bin/logster --output graphite --graphite-host #{new_resource.graphite_host} --metric-prefix #{new_resource.metric_prefix} #{new_resource.parser} #{new_resource.log_file}"
     action :create
   end
@@ -32,9 +32,9 @@ end
 
 action :remove do
   clean_name = new_resource.log_file.gsub(/\//, '_')
-  graphite_host = new_resource.graphite_host
+  clean_graphite_host = new_resource.graphite_host.gsub(/:/, '_')
 
-  cron "logster-#{graphite_host}-#{clean_name}" do
+  cron "logster-#{clean_graphite_host}-#{clean_name}" do
     action :delete
   end
 end
