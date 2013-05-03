@@ -16,7 +16,7 @@ Vagrant.configure("2") do |config|
 
   config.vm.provider :lxc do |lxc|
     # Set the max RAM usage
-    lxc.customize 'cgroup.memory.limit_in_bytes', '128M'
+    lxc.customize 'cgroup.memory.limit_in_bytes', '256M'
   end
 
   # Install the correct version of chef
@@ -40,7 +40,7 @@ Vagrant.configure("2") do |config|
     # Set the chef run-list
     chef.add_recipe("logster")
     chef.add_recipe("logster::test")
-    chef.add_recipe("minitest-handler")
+    chef.add_recipe("minitest-handler") if ENV['VAGRANT_TEST']
 
     # Provide some chef attributes
     chef.json = {}
